@@ -1,0 +1,94 @@
+drop schema if exists Veterinaria;
+create schema if not exists Veterinaria;
+use Veterinaria;
+
+CREATE TABLE PERSONAL(
+ID_PERSONAL int,
+NOMBRE_EMPLEADO varchar(50) NOT NULL,
+APELLIDOS_EMPLEADO varchar(50) NOT NULL,
+DIRECCION varchar(250) NOT NULL,
+CIUDAD varchar(15) NOT NULL,
+ESTADO varchar(15) NOT NULL,
+CP int(5),
+E_MAIL varchar(50) NOT NULL,
+FECHA_DE_NACIMIENTO date NOT NULL,
+TELÉFONO varchar(15) NOT NULL,
+CARGO varchar(50) NOT NULL,
+primary key (ID_PERSONAL)
+);
+
+CREATE TABLE SERVICIO(
+ID_SERVICIO int,
+SERVICIO varchar(50) NOT NULL,
+DESCRIPCIÓN varchar(50) NOT NULL,
+PRECIO decimal (6,2),
+primary key (ID_SERVICIO)
+);
+
+CREATE TABLE CLIENTES(
+ID_CLIENTE int,
+NOMBRE varchar(50) NOT NULL,
+APELLIDOS varchar(50) NOT NULL,
+E_MAIL varchar(50) NOT NULL,
+DIRECCIÓN varchar(50) NOT NULL,
+CIUDAD varchar(15) NOT NULL,
+ESTADO varchar(15) NOT NULL,
+CP int,
+TELÉFONO varchar(15) NOT NULL,
+FECHA_DE_NACIMIENTO date,
+primary key (ID_CLIENTE)
+);
+
+CREATE TABLE MASCOTAS(
+ID_MASCOTA int,
+NOMBRE_MASCOTA varchar(50) NOT NULL,
+RAZA varchar(50) NOT NULL,
+SEXO_MASCOTA ENUM('F', 'M') NOT NULL,
+COLOR varchar(15) NOT NULL,
+EDAD int(2),
+TAMAÑO decimal(3,2) NOT NULL,
+PESO decimal(3,2) NOT NULL,
+PEDIGREE varchar(15),
+CHIP int(15),
+DESCRIPCIÓN varchar(50) NOT NULL,
+FECHA_DE_NACIMIENTOM date NOT NULL,
+ID_CLIENTE int,
+PROPIETARIO varchar(50) NOT NULL,
+primary key (ID_MASCOTA),
+foreign key (ID_CLIENTE) references CLIENTES(ID_CLIENTE));
+
+CREATE TABLE KARDEX(
+NO_KARDEX int,
+ID_MASCOTA int,
+NOMBRE_MASCOTA varchar(50) NOT NULL,
+FECHA date NOT NULL,
+ID_SERVICIO int,
+SERVICIO varchar(50) NOT NULL,
+DESCRIPCIÓN varchar(50) NOT NULL,
+PRÓXIMA_FECHA date NOT NULL,
+ID_PERSONAL int,
+NOMBRE_EMPLEADO varchar(50) NOT NULL,
+HISTORIA_CLÍNICA varchar(50) NOT NULL,
+primary key (NO_KARDEX),
+foreign key (ID_MASCOTA) references MASCOTAS(ID_MASCOTA),
+foreign key (ID_SERVICIO) references SERVICIO(ID_SERVICIO),
+foreign key (ID_PERSONAL) references PERSONAL(ID_PERSONAL));
+
+CREATE TABLE FACTURA(
+NO_FOLIO int,
+FECHA date NOT NULL,
+ID_CLIENTE int,
+ID_MASCOTA int,
+ID_SERVICIO int,
+DETALLE varchar(50) NOT NULL,
+PRECIO_UNITARIO decimal(8,2) NOT NULL,
+SUBTOTAL decimal(8,2) NOT NULL,
+IVA decimal(3,2) NOT NULL,
+TOTAL decimal(10,2) NOT NULL,
+primary key (NO_FOLIO),
+foreign key (ID_CLIENTE) references CLIENTES(ID_CLIENTE),
+foreign key (ID_MASCOTA) references MASCOTAS(ID_MASCOTA),
+foreign key (ID_SERVICIO) references SERVICIO(ID_SERVICIO)
+);
+
+
